@@ -1,10 +1,15 @@
 import { TabBarIcon } from '@/components/navigation/TabBarIcon';
+import { WHITE } from '@/constants/Colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 
 const TabLayout = () => {
   return (
-    <Tabs screenOptions={{ headerShown: false }}>
+    <Tabs
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
