@@ -1,4 +1,4 @@
-import { getAuthErrorMessage, signUp } from '@/api/auth';
+import { getAuthErrorMessage, singIn } from '@/api/auth';
 import { useUserState } from '@/api/UserContext';
 import {
   authFormReducer,
@@ -10,40 +10,31 @@ import HR from '@/components/Hr';
 import Input, { InputTypes, ReturnKeyTypes } from '@/components/Input';
 import SafeInputView from '@/components/SafeInputView';
 import { WHITE } from '@/constants/Colors';
+import { useFocusEffect } from '@react-navigation/native';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useReducer, useRef } from 'react';
-import {
-  Alert,
-  Image,
-  Keyboard,
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from 'react-native';
+import { useCallback, useReducer, useRef } from 'react';
+import { Alert, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const SignUpScreen = () => {
+const [, setUser] = useUserState();
+
+const SignInScreen = () => {
   const passwordRef = useRef();
-  const passwordConfirmRef = useRef();
   const { top, bottom } = useSafeAreaInsets();
-  const [, setUser] = useUserState();
+
   const [form, dispatch] = useReducer(authFormReducer, initAuthForm);
 
-  type Props = {
-    email: string;
-    password: string;
-    passwordConfirm?: string;
-    disabled: boolean;
-    isLoading: boolean;
-  };
-  const updateForm = (payload: Props) => {
+  useFocusEffect(
+    useCallback(() => {
+      console.log('focus');
+      return () => dispatch({ type: AuthFormTypes.RESET });
+    }, [])
+  );
+
+  const updateForm = (payload) => {
     const newForm = { ...form, ...payload };
-    const disabled =
-      !newForm.email ||
-      !newForm.password ||
-      newForm.password !== newForm.passwordConfirm;
+    const disabled = !newForm.email || !newForm.password;
 
     dispatch({
       type: AuthFormTypes.UPDATE_FORM,
@@ -56,11 +47,11 @@ const SignUpScreen = () => {
     if (!form.disabled && !form.isLoading) {
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
       try {
-        const user = await signUp(form);
+        const user = await singIn(form);
         setUser(user);
       } catch (e) {
         const message = getAuthErrorMessage(e.code);
-        Alert.alert('회원가입 실패', message, [
+        Alert.alert('로그인 실패', message, [
           {
             text: '확인',
             onPress: () => dispatch({ type: AuthFormTypes.TOGGLE_LOADING }),
@@ -69,7 +60,6 @@ const SignUpScreen = () => {
       }
     }
   };
-
   return (
     <SafeInputView>
       <StatusBar style="light" />
@@ -84,18 +74,16 @@ const SignUpScreen = () => {
         </View>
 
         {/* 컨텐츠영역 */}
-        <ScrollView
+        <View
           style={[styles.form, { paddingBottom: bottom ? bottom + 10 : 40 }]}
-          contentContainerStyle={{ alignItems: 'center' }}
-          keyboardShouldPersistTaps="always"
         >
-          <Text>Sign Up</Text>
+          <Text>Sign In</Text>
           <Input
             value={form.email}
             onChangeText={(text) => updateForm({ email: text.trim() })}
             inputType={InputTypes.EMAIL}
             returnKeyType={ReturnKeyTypes.NEXT}
-            styles={{ container: { marginBottom: 20 } }}
+            styles={inputStyles}
             onSubmitEditing={() => passwordRef.current.focus()}
           />
           <Input
@@ -103,36 +91,28 @@ const SignUpScreen = () => {
             value={form.password}
             onChangeText={(text) => updateForm({ password: text.trim() })}
             inputType={InputTypes.PASSWORD}
-            returnKeyType={ReturnKeyTypes.NEXT}
-            styles={{ container: { marginBottom: 20 } }}
-            onSubmitEditing={() => passwordConfirmRef.current.focus()}
-          />
-          <Input
-            ref={passwordConfirmRef}
-            value={form.passwordConfirm}
-            onChangeText={(text) =>
-              updateForm({ passwordConfirm: text.trim() })
-            }
-            inputType={InputTypes.PASSWORD}
             returnKeyType={ReturnKeyTypes.DONE}
-            styles={{ container: { marginBottom: 20 } }}
+            styles={inputStyles}
             onSubmitEditing={onSubmit}
           />
 
           <Button
-            title="회원가입"
+            title="Sign In"
             onPress={onSubmit}
             disabled={form.disabled}
             isLoading={form.isLoading}
-            styles={{ container: { marginTop: 20 } }}
+            styles={{ button: { borderRadius: 8 } }}
           />
 
           <HR text="OR" styles={{ container: { marginTop: 30 } }} />
 
-          <Link href="/" style={{ paddingHorizontal: 20, marginTop: 20 }}>
-            로그인
+          <Link
+            href="SignUpScreen"
+            style={{ paddingHorizontal: 20, marginTop: 20 }}
+          >
+            회원가입
           </Link>
-        </ScrollView>
+        </View>
       </View>
     </SafeInputView>
   );
@@ -144,7 +124,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   form: {
-    flexGrow: 0,
+    alignItems: 'center',
     backgroundColor: WHITE,
     paddingHorizontal: 20,
     paddingTop: 40,
@@ -152,4 +132,16 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 20,
   },
 });
-export default SignUpScreen;
+
+const inputStyles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  input: {
+    borderWidth: 1,
+    borderRadius: 8,
+  },
+});
+
+export default SignInScreen;
