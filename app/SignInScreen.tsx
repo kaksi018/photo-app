@@ -17,7 +17,15 @@ import { useCallback, useReducer, useRef } from 'react';
 import { Alert, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-const [, setUser] = useUserState();
+type Props = {
+  email: string;
+  password: string;
+  passwordConfirm?: string;
+  disabled: boolean;
+  isLoading: boolean;
+};
+
+/* const [, setUser] = useUserState(); */
 
 const SignInScreen = () => {
   const passwordRef = useRef();
@@ -32,7 +40,7 @@ const SignInScreen = () => {
     }, [])
   );
 
-  const updateForm = (payload) => {
+  const updateForm = (payload: Props) => {
     const newForm = { ...form, ...payload };
     const disabled = !newForm.email || !newForm.password;
 
@@ -48,7 +56,7 @@ const SignInScreen = () => {
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
       try {
         const user = await singIn(form);
-        setUser(user);
+        /* setUser(user); */
       } catch (e) {
         const message = getAuthErrorMessage(e.code);
         Alert.alert('로그인 실패', message, [
