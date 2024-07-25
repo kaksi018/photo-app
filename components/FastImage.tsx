@@ -4,8 +4,10 @@ import PropTypes from 'prop-types';
 import * as FileSystem from 'expo-file-system';
 import * as Crypto from 'expo-crypto';
 
-const FastImage = ({ source, style, ...props }) => {
+const FastImage = ({ source, ...props }) => {
   const [uri, setUri] = useState(source.uri);
+  const srcuri = source.uri.split('/').pop();
+  console.log(srcuri);
 
   useEffect(() => {
     (async () => {
@@ -14,14 +16,23 @@ const FastImage = ({ source, style, ...props }) => {
           Crypto.CryptoDigestAlgorithm.SHA256,
           source.uri
         );
-        const fileSystemUri = `${FileSystem.cacheDirectory}${hashed}`;
+        const fileSystemUri = `${FileSystem.documentDirectory}${srcuri}`;
 
         const metadata = await FileSystem.getInfoAsync(fileSystemUri);
-        if (metadata.exists) {
+        if (!metadata.exists) {
           await FileSystem.downloadAsync(source.uri, fileSystemUri);
         }
+        console.log(
+          'hashed 값은 : ',
+          hashed,
+          '파일시스템주소는:',
+          fileSystemUri,
+          '메타데이터 내용은:',
+          metadata
+        );
         setUri(fileSystemUri);
       } catch (e) {
+        console.log('소스주소는:', source.uri);
         setUri(source.uri);
       }
     })();

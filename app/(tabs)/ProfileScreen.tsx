@@ -1,14 +1,17 @@
 import { signOut } from '@/api/auth';
 import { useUserState } from '@/api/UserContext';
 import Button from '@/components/Button';
+import DangerAlert, { AlertTypes } from '@/components/DangerAlert';
 import FastImage from '@/components/FastImage';
 import { GRAY, WHITE } from '@/constants/Colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const ProfileScreen = () => {
   /* const [user, setUser] = useUserState(); */
+  const [visible, setVisible] = useState(false);
   const { top } = useSafeAreaInsets();
   const user = {
     email: 'me@email.com',
@@ -20,12 +23,21 @@ const ProfileScreen = () => {
 
   return (
     <View style={[styles.container, { paddingTop: top }]}>
+      <DangerAlert
+        visible={visible}
+        onClose={() => setVisible(false)}
+        alertType={AlertTypes.LOGOUT}
+        onConfirm={async () => {
+          await signOut();
+          /* setUser({}); */
+        }}
+      />
+
       {/* 나가기버튼 */}
       <View style={styles.settingButton}>
         <Pressable
-          onPress={async () => {
-            await signOut();
-            /* setUser({}); */
+          onPress={() => {
+            setVisible(true);
           }}
           hitSlop={10}
         >
