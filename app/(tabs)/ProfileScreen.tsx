@@ -1,16 +1,19 @@
 import { signOut } from '@/api/auth';
-import { useUserState } from '@/api/UserContext';
-import Button from '@/components/Button';
+/* import { useUserState } from '@/api/UserContext'; */
+
 import DangerAlert, { AlertTypes } from '@/components/DangerAlert';
 import FastImage from '@/components/FastImage';
 import { GRAY, WHITE } from '@/constants/Colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import SafeInputView from '@/components/SafeInputView';
 
 const ProfileScreen = () => {
   /* const [user, setUser] = useUserState(); */
+  const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const { top } = useSafeAreaInsets();
   const user = {
@@ -22,47 +25,52 @@ const ProfileScreen = () => {
   };
 
   return (
-    <View style={[styles.container, { paddingTop: top }]}>
-      <DangerAlert
-        visible={visible}
-        onClose={() => setVisible(false)}
-        alertType={AlertTypes.LOGOUT}
-        onConfirm={async () => {
-          await signOut();
-          /* setUser({}); */
-        }}
-      />
-
-      {/* 나가기버튼 */}
-      <View style={styles.settingButton}>
-        <Pressable
-          onPress={() => {
-            setVisible(true);
+    <SafeInputView>
+      <View style={[styles.container, { paddingTop: top }]}>
+        <DangerAlert
+          visible={visible}
+          onClose={() => setVisible(false)}
+          alertType={AlertTypes.LOGOUT}
+          onConfirm={async () => {
+            await signOut();
+            /* setUser({}); */
           }}
-          hitSlop={10}
-        >
-          <MaterialCommunityIcons
-            name="logout-variant"
-            size={24}
-            color={GRAY.DARK}
-          />
-        </Pressable>
-      </View>
+        />
 
-      {/* 프로파일 */}
-      <View style={styles.profile}>
-        <View style={[styles.photo]}>
-          <FastImage source={{ uri: user.photoURL }} style={styles.photo} />
-          <Pressable style={styles.editButton}>
-            <MaterialCommunityIcons name="pencil" size={20} color={WHITE} />
+        {/* 나가기버튼 */}
+        <View style={styles.settingButton}>
+          <Pressable
+            onPress={() => {
+              setVisible(true);
+            }}
+            hitSlop={10}
+          >
+            <MaterialCommunityIcons
+              name="logout-variant"
+              size={24}
+              color={GRAY.DARK}
+            />
           </Pressable>
         </View>
-        <Text style={styles.nickname}>{user.displayName || 'nickname'}</Text>
-      </View>
 
-      {/* 내가올린사진목록 */}
-      <View style={styles.listContainer}></View>
-    </View>
+        {/* 프로파일 */}
+        <View style={styles.profile}>
+          <View style={[styles.photo]}>
+            <FastImage source={{ uri: user.photoURL }} style={styles.photo} />
+            <Pressable
+              style={styles.editButton}
+              onPress={() => navigation.navigate('updateProfileScreen')}
+            >
+              <MaterialCommunityIcons name="pencil" size={20} color={WHITE} />
+            </Pressable>
+          </View>
+          <Text style={styles.nickname}>{user.displayName || 'nickname'}</Text>
+        </View>
+
+        {/* 내가올린사진목록 */}
+        <View style={styles.listContainer}></View>
+      </View>
+    </SafeInputView>
   );
 };
 

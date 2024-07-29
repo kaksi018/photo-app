@@ -1,4 +1,4 @@
-import { useUserState } from '@/api/UserContext';
+/* import { useUserState } from '@/api/UserContext'; */
 import Button from '@/components/Button';
 import FastImage from '@/components/FastImage';
 import SafeInputView from '@/components/SafeInputView';
@@ -9,7 +9,14 @@ import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 const updateProfileScreen = () => {
   const navigation = useNavigation();
-  const [user] = useUserState();
+  /* const [user] = useUserState(); */
+  const user = {
+    email: 'me@email.com',
+    password: 'a12345',
+    photoURL:
+      'https://firebasestorage.googleapis.com/v0/b/rn-photo-5a2df.appspot.com/o/profile.jpg?alt=media',
+    displayName: 'test',
+  };
 
   return (
     <SafeInputView>

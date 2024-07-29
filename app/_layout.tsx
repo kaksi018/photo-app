@@ -6,6 +6,7 @@ const RootLayout = () => {
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" />
       <Stack.Screen name="+not-found" />
+      <Stack.Screen name="updateProfileScreen" />
     </Stack>
   );
 };
