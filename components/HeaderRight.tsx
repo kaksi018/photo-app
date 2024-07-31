@@ -4,8 +4,8 @@ import { Pressable } from 'react-native';
 import PropTypes from 'prop-types';
 
 type Props = {
-  disabled: boolean;
-  onPress: () => void;
+  disabled?: boolean;
+  onPress?: () => void;
 };
 
 const HeaderRight = ({ disabled, onPress }: Props) => {
