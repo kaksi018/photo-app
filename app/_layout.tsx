@@ -9,6 +9,7 @@ const RootLayout = () => {
       <Stack.Screen name="ImagePickerScreen" />
       <Stack.Screen name="+not-found" />
       <Stack.Screen name="updateProfileScreen" />
+      <Stack.Screen name="WriteTextScreen" />
     </Stack>
   );
 };

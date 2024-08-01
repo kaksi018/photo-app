@@ -1,5 +1,5 @@
-import { getAuthErrorMessage, singIn } from '@/api/auth';
-import { useUserState } from '@/api/UserContext';
+import { getAuthErrorMessages, signIn } from '@/api/auth';
+import { UserContext } from '@/api/UserContext';
 import {
   authFormReducer,
   AuthFormTypes,
@@ -13,7 +13,7 @@ import { WHITE } from '@/constants/Colors';
 import { useFocusEffect } from '@react-navigation/native';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useCallback, useReducer, useRef } from 'react';
+import { useCallback, useReducer, useRef, useState } from 'react';
 import { Alert, Image, Keyboard, StyleSheet, Text, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -25,7 +25,7 @@ type Props = {
   isLoading: boolean;
 };
 
-/* const [, setUser] = useUserState(); */
+const [, setUser] = useState(UserContext);
 
 const SignInScreen = () => {
   const passwordRef = useRef();
@@ -35,7 +35,6 @@ const SignInScreen = () => {
 
   useFocusEffect(
     useCallback(() => {
-      console.log('focus');
       return () => dispatch({ type: AuthFormTypes.RESET });
     }, [])
   );
@@ -55,10 +54,11 @@ const SignInScreen = () => {
     if (!form.disabled && !form.isLoading) {
       dispatch({ type: AuthFormTypes.TOGGLE_LOADING });
       try {
-        const user = await singIn(form);
-        /* setUser(user); */
+        const user = await signIn(form);
+        setUser(user);
+        console.log('user정보는:', user);
       } catch (e) {
-        const message = getAuthErrorMessage(e.code);
+        const message = getAuthErrorMessages(e.code);
         Alert.alert('로그인 실패', message, [
           {
             text: '확인',

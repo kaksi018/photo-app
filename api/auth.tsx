@@ -3,30 +3,29 @@ import {
   createUserWithEmailAndPassword,
   getAuth,
   signInWithEmailAndPassword,
+  onAuthStateChanged as onAuthStateChangedFirebase,
   signOut as signOutFirebase,
   updateProfile,
 } from 'firebase/auth';
 
-const PHOTO_URL = '.../o/profile.jpg?alt=media';
-
-export const getAuthErrorMessage = (errorCode: string): string => {
+export const getAuthErrorMessages = (errorCode: string) => {
   switch (errorCode) {
     case AuthErrorCodes.USER_DELETED:
-      return '계정을 찾을 수 없습니다';
+      return '계정을 찾을 수 없습니다.';
     case AuthErrorCodes.INVALID_EMAIL:
-      return '유효하지 않는 이메일 주소입니다.';
+      return '유효하지 않은 이메일 주소입니다.';
     case AuthErrorCodes.INVALID_PASSWORD:
       return '잘못된 비밀번호입니다.';
     case AuthErrorCodes.EMAIL_EXISTS:
       return '이미 가입된 이메일입니다.';
     case AuthErrorCodes.WEAK_PASSWORD:
-      return '비밀번호는 영문자포함 최소 6자리입니다.';
+      return '비밀번호는 최소 6자리입니다.';
     default:
-      return '로그인실패';
+      return '로그인에 실패했습니다.';
   }
 };
 
-export const singIn = async ({
+export const signIn = async ({
   email,
   password,
 }: {
@@ -36,6 +35,9 @@ export const singIn = async ({
   const { user } = await signInWithEmailAndPassword(getAuth(), email, password);
   return user;
 };
+
+const PHOTO_URL =
+  'https://firebasestorage.googleapis.com/v0/b/rn-photo.appspot.com/o/profile.png?alt=media';
 
 export const signUp = async ({
   email,
@@ -52,19 +54,23 @@ export const signUp = async ({
 
   await updateUserInfo({
     displayName: email.split('@')[0].slice(0, 10),
-    PhotoURL: PHOTO_URL,
+    photoURL: PHOTO_URL,
   });
 
   return user;
 };
 
-export const signOut = async () => {
-  return await signOutFirebase(getAuth());
+export const onAuthStateChanged = (callback: any) => {
+  return onAuthStateChangedFirebase(getAuth(), callback);
 };
 
-export const updateUserInfo = async (userInfo: object) => {
+export const signOut = async () => {
+  await signOutFirebase(getAuth());
+};
+
+export const updateUserInfo = async (userInfo: any) => {
   try {
-    await updateProfile(getAuth(), currentUser, userInfo);
+    await updateProfile(getAuth().currentUser, userInfo);
   } catch (e) {
     throw new Error('사용자 정보 수정에 실패했습니다.');
   }

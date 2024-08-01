@@ -20,7 +20,7 @@ const HomeScreen = () => {
       {/* 타이틀 */}
       <View style={styles.topContainer}>
         <Image
-          source={require('../../assets/images/icon.png')}
+          source={require('../assets/images/icon.png')}
           style={styles.icon}
         />
         <Text style={styles.title}>PlacePhotos</Text>
@@ -30,7 +30,7 @@ const HomeScreen = () => {
       <View style={styles.buttonContainer}>
         <Pressable onPress={() => navigation.navigate('ListScreen')}>
           <Image
-            source={require('../../assets/images/home-clock.png')}
+            source={require('../assets/images/home-clock.png')}
             style={[styles.image, { height }]}
           />
           <Text style={styles.buttonTitle}>타임라인</Text>
@@ -41,7 +41,7 @@ const HomeScreen = () => {
       <View style={styles.buttonContainer}>
         <Pressable onPress={() => navigation.navigate('MapScreen')}>
           <Image
-            source={require('../../assets/images/home-map.png')}
+            source={require('../assets/images/home-map.png')}
             style={[styles.image, { height }]}
           />
           <Text style={styles.buttonTitle}>지도</Text>

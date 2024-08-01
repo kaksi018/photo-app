@@ -22,17 +22,8 @@ const FastImage = ({ source, ...props }) => {
         if (!metadata.exists) {
           await FileSystem.downloadAsync(source.uri, fileSystemUri);
         }
-        console.log(
-          'hashed 값은 : ',
-          hashed,
-          '파일시스템주소는:',
-          fileSystemUri,
-          '메타데이터 내용은:',
-          metadata
-        );
         setUri(fileSystemUri);
       } catch (e) {
-        console.log('소스주소는:', source.uri);
         setUri(source.uri);
       }
     })();

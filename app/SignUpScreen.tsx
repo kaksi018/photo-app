@@ -1,5 +1,5 @@
-import { getAuthErrorMessage, signUp } from '@/api/auth';
-import { useUserState } from '@/api/UserContext';
+import { getAuthErrorMessages, signUp } from '@/api/auth';
+import { UserContext } from '@/api/UserContext';
 import {
   authFormReducer,
   AuthFormTypes,
@@ -12,7 +12,7 @@ import SafeInputView from '@/components/SafeInputView';
 import { WHITE } from '@/constants/Colors';
 import { Link } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { useReducer, useRef } from 'react';
+import { useReducer, useRef, useState } from 'react';
 import {
   Alert,
   Image,
@@ -28,7 +28,7 @@ const SignUpScreen = () => {
   const passwordRef = useRef();
   const passwordConfirmRef = useRef();
   const { top, bottom } = useSafeAreaInsets();
-  const [, setUser] = useUserState();
+  const [, setUser] = useState(UserContext);
   const [form, dispatch] = useReducer(authFormReducer, initAuthForm);
 
   type Props = {
@@ -59,7 +59,7 @@ const SignUpScreen = () => {
         const user = await signUp(form);
         setUser(user);
       } catch (e) {
-        const message = getAuthErrorMessage(e.code);
+        const message = getAuthErrorMessages(e.code);
         Alert.alert('회원가입 실패', message, [
           {
             text: '확인',

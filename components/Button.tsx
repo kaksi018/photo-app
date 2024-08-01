@@ -1,6 +1,12 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 import PropTypes from 'prop-types';
-import { DANGER, GRAY, PRIMARY, WHITE } from '@/constants/Colors';
+import { WHITE, GRAY, PRIMARY, DANGER } from '@/constants/Colors';
 
 export const ButtonTypes = {
   PRIMARY: 'PRIMARY',
@@ -19,31 +25,28 @@ const ButtonTypeColors = {
     LIGHT: DANGER.LIGHT,
     DARK: DANGER.DARK,
   },
-  CANCEL: {
-    DEFAULT: GRAY.DEFAULT,
-    DARK: GRAY.DARK,
-    LIGHT: GRAY.LIGHT,
-  },
+  CANCEL: { DEFAULT: GRAY.DEFAULT, LIGHT: GRAY.LIGHT, DARK: GRAY.DARK },
 };
 
-interface Props {
-  title: string;
+type Props = {
   styles?: object;
-  onPress: () => void;
+  title: string;
+  onPress: () => {};
   disabled?: boolean;
   isLoading?: boolean;
   buttonType?: string;
-}
+};
 
 const Button = ({
-  title,
   styles,
+  title,
   onPress,
   disabled,
   isLoading,
   buttonType,
 }: Props) => {
   const Colors = ButtonTypeColors[buttonType];
+
   return (
     <View style={[defaultStyles.container, styles?.container]}>
       <Pressable
@@ -51,7 +54,6 @@ const Button = ({
         disabled={disabled || isLoading}
         style={({ pressed }) => [
           defaultStyles.button,
-          styles?.button,
           {
             backgroundColor: (() => {
               switch (true) {
@@ -64,17 +66,26 @@ const Button = ({
               }
             })(),
           },
+          styles?.button,
         ]}
       >
-        <Text style={[defaultStyles.title, styles?.title]}>{title}</Text>
+        {isLoading ? (
+          <ActivityIndicator size="small" color={GRAY.DARK} />
+        ) : (
+          <Text style={[defaultStyles.title, styles?.title]}>{title}</Text>
+        )}
       </Pressable>
     </View>
   );
 };
 
+Button.defaultProps = {
+  buttonType: ButtonTypes.PRIMARY,
+};
+
 Button.propTypes = {
-  title: PropTypes.string.isRequired,
   styles: PropTypes.object,
+  title: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
   disabled: PropTypes.bool,
   isLoading: PropTypes.bool,
@@ -84,8 +95,6 @@ Button.propTypes = {
 const defaultStyles = StyleSheet.create({
   container: {
     width: '100%',
-    paddingHorizontal: 20,
-    marginTop: 20,
   },
   button: {
     paddingVertical: 20,
