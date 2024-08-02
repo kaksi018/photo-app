@@ -72,7 +72,6 @@ const SignUpScreen = () => {
 
   return (
     <SafeInputView>
-      <StatusBar style="light" />
       <View style={[styles.container, { paddingTop: top }]}>
         {/* 배경이미지 */}
         <View style={StyleSheet.absoluteFill}>

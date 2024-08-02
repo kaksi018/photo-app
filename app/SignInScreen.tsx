@@ -30,7 +30,6 @@ const [, setUser] = useState(UserContext);
 const SignInScreen = () => {
   const passwordRef = useRef();
   const { top, bottom } = useSafeAreaInsets();
-
   const [form, dispatch] = useReducer(authFormReducer, initAuthForm);
 
   useFocusEffect(
@@ -70,7 +69,6 @@ const SignInScreen = () => {
   };
   return (
     <SafeInputView>
-      <StatusBar style="light" />
       <View style={[styles.container, { paddingTop: top }]}>
         {/* 배경이미지 */}
         <View style={StyleSheet.absoluteFill}>
