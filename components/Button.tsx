@@ -79,10 +79,6 @@ const Button = ({
   );
 };
 
-Button.defaultProps = {
-  buttonType: ButtonTypes.PRIMARY,
-};
-
 Button.propTypes = {
   styles: PropTypes.object,
   title: PropTypes.string.isRequired,

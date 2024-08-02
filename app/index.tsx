@@ -64,7 +64,7 @@ const Index = () => {
     <ActionSheetProvider>
       <UserProvider>
         <StatusBar style="dark" />
-        <NavigationContainer onReady={onReady}>
+        <NavigationContainer onReady={onReady} independent={true}>
           {user.uid ? <MainStack /> : <AuthStack />}
         </NavigationContainer>
       </UserProvider>
