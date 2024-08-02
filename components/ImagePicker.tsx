@@ -1,9 +1,10 @@
-import { Alert, FlatList, StyleSheet, View } from 'react-native';
+import { Alert, FlatList, Platform, StyleSheet, View } from 'react-native';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as MediaLibrary from 'expo-media-library';
 import PropTypes from 'prop-types';
 import PhotoItem from './PostItem';
 import { useNavigation } from '@react-navigation/native';
+import ImageListIos from './ImageListIos';
 
 const initialListInfo = { endCursor: '', hasNextPage: true };
 
@@ -71,13 +72,21 @@ const ImagePicker = ({ togglePhoto, isSelectedPhoto }) => {
       <FlatList
         style={styles.list}
         data={photos}
-        renderItem={({ item }) => (
-          <PhotoItem
-            item={item}
-            togglePhoto={togglePhoto}
-            isSelected={isSelectedPhoto(item)}
-          />
-        )}
+        renderItem={({ item }) =>
+          Platform.OS === 'ios' ? (
+            <ImageListIos
+              id={item.id}
+              togglePhoto={togglePhoto}
+              isSelected={isSelectedPhoto(item)}
+            />
+          ) : (
+            <PhotoItem
+              item={item}
+              togglePhoto={togglePhoto}
+              isSelected={isSelectedPhoto(item)}
+            />
+          )
+        }
         numColumns={3}
         onEndReached={getPhotos}
         onEndReachedThreshold={0.4}

@@ -6,8 +6,8 @@ import * as Crypto from 'expo-crypto';
 
 const FastImage = ({ source, ...props }) => {
   const [uri, setUri] = useState(source.uri);
-  const srcuri = source.uri.split('/').pop();
-  console.log(srcuri);
+  const srcuri = uri === undefined ? null : uri.split('/').pop();
+  console.log(uri);
 
   useEffect(() => {
     (async () => {

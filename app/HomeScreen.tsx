@@ -28,7 +28,7 @@ const HomeScreen = () => {
 
       {/* 타임라인 */}
       <View style={styles.buttonContainer}>
-        <Pressable onPress={() => navigation.navigate('ListScreen')}>
+        <Pressable onPress={() => navigation.navigate('LIST')}>
           <Image
             source={require('../assets/images/home-clock.png')}
             style={[styles.image, { height }]}
@@ -39,7 +39,7 @@ const HomeScreen = () => {
 
       {/* 지도 */}
       <View style={styles.buttonContainer}>
-        <Pressable onPress={() => navigation.navigate('MapScreen')}>
+        <Pressable onPress={() => navigation.navigate('MAP')}>
           <Image
             source={require('../assets/images/home-map.png')}
             style={[styles.image, { height }]}

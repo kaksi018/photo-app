@@ -1,7 +1,7 @@
 import { FlatList, StyleSheet, View } from 'react-native';
 import PostItem from './PostItem';
 import { GRAY } from '@/constants/Colors';
-import usePosts from '../hooks/usePosts';
+import usePosts from '@/hooks/usePosts';
 import { useEffect, useState } from 'react';
 import event, { EventTypes } from '@/constants/event';
 import { UserContext } from '@/api/UserContext';

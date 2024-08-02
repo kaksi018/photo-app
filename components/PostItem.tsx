@@ -13,7 +13,7 @@ import PropTypes from 'prop-types';
 import { DANGER, GRAY, PRIMARY, WHITE } from '@/constants/Colors';
 import { memo, useState } from 'react';
 import { useActionSheet } from '@expo/react-native-action-sheet';
-import { UserContext, useUserState } from '@/api/UserContext';
+import { UserContext } from '@/api/UserContext';
 import DangerAlert, { AlertTypes } from './DangerAlert';
 import { deletePost } from '@/api/post';
 import event, { EventTypes } from '@/constants/event';

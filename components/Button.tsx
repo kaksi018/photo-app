@@ -29,9 +29,9 @@ const ButtonTypeColors = {
 };
 
 type Props = {
-  styles?: object;
+  styles?: { title: object; container: object; button: object };
   title: string;
-  onPress: () => {};
+  onPress: () => void;
   disabled?: boolean;
   isLoading?: boolean;
   buttonType?: string;
@@ -45,8 +45,6 @@ const Button = ({
   isLoading,
   buttonType,
 }: Props) => {
-  const Colors = ButtonTypeColors[buttonType];
-
   return (
     <View style={[defaultStyles.container, styles?.container]}>
       <Pressable
@@ -58,11 +56,11 @@ const Button = ({
             backgroundColor: (() => {
               switch (true) {
                 case disabled || isLoading:
-                  return Colors.LIGHT;
+                  return DANGER.LIGHT;
                 case pressed:
-                  return Colors.DARK;
+                  return DANGER.DARK;
                 default:
-                  return Colors.DEFAULT;
+                  return DANGER.DEFAULT;
               }
             })(),
           },

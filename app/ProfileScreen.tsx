@@ -1,12 +1,13 @@
-import { signOut } from '@/api/auth';
-import DangerAlert, { AlertTypes } from '@/components/DangerAlert';
-import FastImage from '@/components/FastImage';
-import { GRAY, WHITE } from '@/constants/Colors';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
+import FastImage from '@/components/FastImage';
+import { signOut } from '@/api/auth';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { GRAY, WHITE } from '@/constants/Colors';
+import DangerAlert, { AlertTypes } from '@/components/DangerAlert';
+import { useState } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import PostList from '@/components/PostList';
 import { UserContext } from '@/api/UserContext';
 
 const ProfileScreen = () => {
@@ -49,7 +50,7 @@ const ProfileScreen = () => {
           <FastImage source={{ uri: user.photoURL }} style={styles.photo} />
           <Pressable
             style={styles.editButton}
-            onPress={() => navigation.navigate('UpdateProfileScreen')}
+            onPress={() => navigation.navigate('UPDATE_PROFILE')}
           >
             <MaterialCommunityIcons name="pencil" size={20} color={WHITE} />
           </Pressable>

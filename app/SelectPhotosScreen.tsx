@@ -22,7 +22,7 @@ const SelectPhotosScreen = () => {
       <View style={{ width, height: width }}>
         <Pressable
           style={styles.photoButton}
-          onPress={() => navigation.navigate('ImagePickerScreen')}
+          onPress={() => navigation.navigate('IMAGE_PICKER')}
         >
           <MaterialCommunityIcons
             name="image-plus"
